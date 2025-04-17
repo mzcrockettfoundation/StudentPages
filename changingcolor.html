@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #body{
+         background-color:grey;
+       }
+       
+    </style>
+
+  </head>
+  <body id="body">
+      <script>
+        var body = document.getElementById("body");
+        var colors = ["red","green","blue"];
+        
+        function colorChange(event)
+        {
+             if (event.key === 'r') {
+            body.style.backgroundColor=colors[0];
+          } else if (event.key === 'g') {
+            body.style.backgroundColor=colors[1];
+          } else if (event.key === 'b') {
+            body.style.backgroundColor=colors[2];
+          } else if (event.key === 'y') {
+            body.style.backgroundColor="yellow";
+          } else if (event.key === 'k') {
+            body.style.backgroundColor="black";
+          } else if (event.key === ' ') {
+            for(let i=0; i<3 ; i++){
+              setTimeout(function(){
+              body.style.backgroundColor=colors[i];
+            }, 1000*i);
+          };
+        }
+      }
+        
+        document.addEventListener('keydown',colorChange)
+      </script>
+  </body>
+</html>

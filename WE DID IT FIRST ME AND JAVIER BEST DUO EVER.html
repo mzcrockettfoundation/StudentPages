@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catch the Fruit Game</title>
+    <style>
+        body {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .fruit {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        #basket {
+            position: absolute;
+            bottom: 0;
+            width: 50px;
+            height: 20px;
+            background-color: blue;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <div id="basket"></div>
+    <script>
+        const basket = document.getElementById('basket');
+        let score = 0;
+        let fruits = [];
+        var posX=0;
+        var posY=0;
+        function createFruit() {
+            const fruit = document.createElement('div');
+            fruit.classList.add('fruit');
+            fruit.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+            fruit.style.top = '0px';
+            document.body.appendChild(fruit);
+            fruits.push(fruit);
+        }
+
+        function moveBasket(e) {
+            if (e.key === 'ArrowLeft') {
+                posX=posX-10;
+            } else if (e.key === 'ArrowRight') {
+                posX=posX+10;
+            }
+            
+            basket.style.left = posX + 'px';
+
+        }
+
+        function updateFruits() {
+            fruits.forEach(fruit => {
+                fruit.style.top = fruit.offsetTop + 5 + 'px';
+                if (fruit.offsetTop > window.innerHeight) {
+                    fruit.style.top = '0px';
+                    fruit.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+                }
+                if (fruit.offsetTop + 20 > basket.offsetTop && fruit.offsetLeft > basket.offsetLeft && fruit.offsetLeft < basket.offsetLeft + basket.offsetWidth) {
+                    score++;
+                    document.getElementById('score').innerText = `Score: ${score}`;
+                    fruit.style.top = '0px';
+                    fruit.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+                }
+            });
+        }
+
+        function gameLoop() {
+            updateFruits();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function initGame() {
+            for (let i = 0; i < 1; i--) {
+                createFruit();
+            }
+            gameLoop();
+        }
+
+        document.addEventListener('keydown', moveBasket);
+        initGame();
+    </script>
+</body>
+</html>
