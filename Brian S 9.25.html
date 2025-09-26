@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hello, World!</title>
+<style>
+
+      #canvas1{
+
+      border:5px solid black;
+
+      position: absolute;
+
+      top:50%;
+
+      left:50%;
+
+      transform:translate(-50%,-50%);
+
+      width:600px;
+
+      height:600px;
+
+      }
+</style>
+</head>
+<body>
+<canvas id="canvas1"> </canvas>
+<script>
+
+var canvas = document.getElementById('canvas1');
+
+var ctx = canvas.getContext('2d');
+
+var cWidth=canvas.width = 600;
+
+var cHeight=canvas.height = 600;
+ 
+function square(x,y,length,height,color){
+
+ctx.beginPath();
+
+ctx.fillStyle=color;
+
+ctx.fillRect(x,y,length,height);
+
+}
+ 
+function circle(x,y,length,height,rotation,angle,color){
+
+ctx.beginPath();
+
+ctx.moveTo(x,y);
+
+ctx.ellipse(x, y, length, height, rotation, 0, angle);
+
+ctx.fillStyle=color;
+
+ctx.fill();
+
+}
+ 
+function triangle(x1,y1,x2,y2,x3,y3,color){
+
+ctx.beginPath();
+
+ctx.moveTo(x1, y1); 
+
+ctx.lineTo(x2, y2); 
+
+ctx.lineTo(x3, y3);
+
+ctx.closePath();
+
+ctx.fillStyle = color; 
+
+ctx.fill();
+ 
+}
+ 
+function drawHeart(x, y, size, color) {
+
+  ctx.beginPath();
+
+      ctx.moveTo(x, y);
+
+      ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+
+      ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+
+      ctx.fillStyle = color;
+
+      ctx.fill();
+
+      ctx.closePath();
+
+}
+ 
+function drawWord(text, x, y, fontSize = 30, color = "black", fontFamily = "Arial") {
+
+  ctx.beginPath();
+
+  ctx.font = `${fontSize}px ${fontFamily}`;
+
+  ctx.fillStyle = color;
+
+  ctx.fillText(text, x, y);
+
+}
+ 
+function drawIcon(x, y, width, height) {
+
+  const image = new Image();
+
+  image.src = "https://logos-world.net/wp-content/uploads/2022/03/Breast-Cancer-Symbol.png";
+
+  image.addEventListener("load", () => {
+
+    ctx.drawImage(image, x, y, width, height);
+
+  });
+
+}
+drawHeart(70,20,100,"red")
+drawHeart(70,130,100,"red")
+drawHeart(70,240,100,"red")
+drawHeart(70,350,100,"red")
+drawHeart(70,460,100,"red")
+
+drawHeart(200,20,100,"red")
+drawHeart(200,130,100,"red")
+drawHeart(200,240,100,"red")
+drawHeart(200,350,100,"red")
+drawHeart(200,460,100,"red")
+
+drawHeart(330,20,100,"red")
+drawHeart(330,130,100,"red")
+drawHeart(330,240,100,"red")
+drawHeart(330,350,100,"red")
+drawHeart(330,460,100,"red")
+
+drawHeart(460,20,100,"red")
+drawHeart(460,130,100,"red")
+drawHeart(460,240,100,"red")
+drawHeart(460,350,100,"red")
+drawHeart(460,460,100,"red")
+ 
+//ribbon
+
+drawIcon(170,210,270,80);
+ 
+//text
+
+drawWord("Help fight", 40, 250, 30, "purple");
+drawWord("Breast Cancer!", 40, 280, 30, "purple");
+ 
+//circle
+
+circle(300,150,50,50,1,2*Math.PI,"#DCB86E");
+ 
+//square
+
+square(250,255,100,119,"pink");
+ 
+//triangle
+
+circle(300,150,50,50,3.14,Math.PI,"brown");
+ 
+//heart
+
+drawHeart(300,200,100,"pink")
+
+
+ 
+      </script>
+</body>
+</html>
+ 

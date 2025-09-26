@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hello, World!</title>
+<style>
+ 
+      #canvas1{
+ 
+      border:5px solid black;
+ 
+      position: absolute;
+ 
+      top:50%;
+ 
+      left:50%;
+ 
+      transform:translate(-50%,-50%);
+ 
+      width:600px;
+ 
+      height:600px;
+ 
+      }
+</style>
+</head>
+<body>
+<canvas id="canvas1"  style="background-color:#ed8ae3;"></canvas>
+<script>
+ 
+var canvas = document.getElementById('canvas1');
+ 
+var ctx = canvas.getContext('2d');
+ 
+var cWidth=canvas.width = 600;
+ 
+var cHeight=canvas.height = 600;
+ 
+function square(x,y,length,height,color){
+ 
+ctx.beginPath();
+ 
+ctx.fillStyle=color;
+ 
+ctx.fillRect(x,y,length,height);
+ 
+}
+ 
+function circle(x,y,length,height,rotation,angle,color){
+ 
+ctx.beginPath();
+ 
+ctx.moveTo(x,y);
+ 
+ctx.ellipse(x, y, length, height, rotation, 0, angle);
+ 
+ctx.fillStyle=color;
+ 
+ctx.fill();
+ 
+}
+ 
+function triangle(x1,y1,x2,y2,x3,y3,color){
+ 
+ctx.beginPath();
+ 
+ctx.moveTo(x1, y1);
+ 
+ctx.lineTo(x2, y2);
+ 
+ctx.lineTo(x3, y3);
+ 
+ctx.closePath();
+ 
+ctx.fillStyle = color;
+ 
+ctx.fill();
+ 
+}
+ 
+function drawHeart(x, y, size, color) {
+ 
+  ctx.beginPath();
+ 
+      ctx.moveTo(x, y);
+ 
+      ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+ 
+      ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+ 
+      ctx.fillStyle = color;
+ 
+      ctx.fill();
+ 
+      ctx.closePath();
+ 
+}
+ 
+function drawWord(text, x, y, fontSize = 30, color = "black", fontFamily = "Arial") {
+ 
+  ctx.beginPath();
+ 
+  ctx.font = `${fontSize}px ${fontFamily}`;
+ 
+  ctx.fillStyle = color;
+ 
+  ctx.fillText(text, x, y);
+ 
+}
+ 
+function drawIcon(x, y, width, height) {
+ 
+  const image = new Image();
+ 
+  image.src = "https://logos-world.net/wp-content/uploads/2022/03/Breast-Cancer-Symbol.png";
+ 
+  image.addEventListener("load", () => {
+ 
+    ctx.drawImage(image, x, y, width, height);
+ 
+  });
+ 
+}
+function drawFight(x, y, width, height) {
+ 
+  const image = new Image();
+ 
+  image.src = "https://static.vecteezy.com/system/resources/previews/045/700/400/non_2x/red-boxing-glove-image-free-png.png";
+ 
+  image.addEventListener("load", () => {
+ 
+    ctx.drawImage(image, x, y, width, height);
+ 
+  });
+ 
+}
+ 
+//ribbon
+ 
+drawIcon(165,350,100,50);
+ 
+//text
+ 
+drawWord("Breast Cancer Month", 50, 550, 50, "pink");
+ 
+//hair
+ 
+circle(200,290,50,50,0,2*Math.PI,"black");
+ 
+circle(170,270,40,40,0,2*Math.PI,"black");
+ 
+circle(230,270,40,40,0,2*Math.PI,"black");
+ 
+//head
+ 
+circle(200,300,40,40,0,2*Math.PI,"#DCB86E");
+ 
+circle(200,310,20,20,0,Math.PI,"white");
+ 
+circle(180,290,10,10,0,2*Math.PI,"white");
+ 
+circle(220,290,10,10,0,2*Math.PI,"white");
+ 
+circle(180,290,5,5,0,2*Math.PI,"black");
+ 
+circle(220,290,5,5,0,2*Math.PI,"black");
+ 
+ 
+//square
+ 
+ 
+//triangle
+ 
+ 
+//Arm(left)
+ 
+square(100,350,60,22,"#DCB86E");
+ 
+square(90,312,20,60,"#DCB86E");
+
+circle(140,355,20,20,0,2*Math.PI,"#DCB86E");
+
+drawFight(50,250,100,100);
+ 
+//Arm(right)
+ 
+square(239,350,60,20,"#DCB86E");
+ 
+square(298,310,20,60,"#DCB86E");
+
+drawFight(250,250,100,100);
+
+circle(260,355,20,20,0,2*Math.PI,"#DCB86E");
+ 
+//heart
+ 
+drawHeart(200,350,75,"#e6148b")
+ 
+drawHeart(200,400,65,"#e6148b")
+ 
+ 
+</script>
+</body>
+</html>
