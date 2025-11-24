@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: 100%;
+            margin: 0;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        .menubar {
+            z-index: 1;
+        }
+
+        p {
+            margin: 0;
+            margin-left: 10px;
+            color: #40531a;
+            font-weight: 800;
+        }
+
+        .background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
+            background: #4fc968;
+            overflow: hidden;
+        }
+
+        .background li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 19s linear infinite;
+        }
+
+        .background li:nth-child(1) {
+            left: 9%;
+            width: 195px;
+            height: 195px;
+            bottom: -195px;
+            animation-delay: 2s;
+        }
+
+        .background li:nth-child(2) {
+            left: 69%;
+            width: 176px;
+            height: 176px;
+            bottom: -176px;
+            animation-delay: 7s;
+        }
+
+        .background li:nth-child(3) {
+            left: 16%;
+            width: 125px;
+            height: 125px;
+            bottom: -125px;
+            animation-delay: 1s;
+        }
+
+        .background li:nth-child(4) {
+            left: 25%;
+            width: 115px;
+            height: 115px;
+            bottom: -115px;
+            animation-delay: 12s;
+        }
+
+        .background li:nth-child(5) {
+            left: 26%;
+            width: 181px;
+            height: 181px;
+            bottom: -181px;
+            animation-delay: 23s;
+        }
+
+        .background li:nth-child(6) {
+            left: 3%;
+            width: 180px;
+            height: 180px;
+            bottom: -180px;
+            animation-delay: 25s;
+        }
+
+        .background li:nth-child(7) {
+            left: 38%;
+            width: 136px;
+            height: 136px;
+            bottom: -136px;
+            animation-delay: 19s;
+        }
+
+        .background li:nth-child(8) {
+            left: 1%;
+            width: 115px;
+            height: 115px;
+            bottom: -115px;
+            animation-delay: 31s;
+        }
+
+        .background li:nth-child(9) {
+            left: 55%;
+            width: 100px;
+            height: 100px;
+            bottom: -100px;
+            animation-delay: 6s;
+        }
+
+        #mazeCanvas {
+            position: absolute;
+            margin-top: 60px;
+            margin-left: -370px;
+            background-color: #7FA347;
+            border: 5px solid #4E6227;
+            border-radius: 10px;
+        }
+
+        .msgbox {
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            border-radius: 15px;
+            border: 5px solid #FFD700;
+            background-color: #1E90FF;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            visibility: hidden;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .msgbox h1 {
+            color: #FFD700;
+            margin-top: 20px;
+        }
+
+        .msgbox h2 {
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        .msgbox button {
+            background-color: #FFD700;
+            color: #000000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .msgbox button:hover {
+            background-color: #FFC125;
+        }
+
+        .startbtn {
+            background-color: #af4c91;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.5s ease;
+        }
+
+        .startbtn:hover {
+            background-color: #64035f;
+        }
+
+        #btnUp,
+        #btnDown,
+        #btnRight,
+        #btnLeft {
+            background-color: #db6334;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        #btnUp:hover,
+        #btnDown:hover,
+        #btnRight:hover,
+        #btnLeft:hover {
+            background-color: #b92929;
+        }
+
+        @keyframes blinkBorder {
+            0%, 100% {
+                box-shadow: 0 0 20px #c01826;
+            }
+            50% {
+                box-shadow: none;
+            }
+        }
+
+        .startbtn.blink {
+            animation: blinkBorder 2s linear infinite;
+        }
+
+        @media screen and (max-width: 568px) {
+            body {
+                flex-direction: column;
+            }
+
+            #mazeCanvas {
+                width: 70%;
+                margin-left: -165px;
+            }
+
+            #arrowMessage {
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .background li {
+                width: 15px;
+                height: 15px;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            body {
+                flex-direction: column;
+            }
+
+            #mazeCanvas {
+                width: 70%;
+                margin-left: -130px;
+            }
+
+            .msgbox {
+                width: 50%;
+                height: 35%;
+            }
+        }
+
+        @media screen and (max-width: 280px) {
+            body {
+                flex-direction: column;
+            }
+
+            #mazeCanvas {
+                width: 70%;
+                margin-left: -100px;
+            }
+
+            .msgbox {
+                width: 40%;
+                height: 38%;
+            }
+
+            .msgbox button {
+                padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menubar">
+        <h2
+            style="color:rgb(70, 50, 52);
+            font-family: 'Lucida Sans',
+                         'Lucida Sans Regular',
+                         'Lucida Grande',
+                         'Lucida Sans Unicode',
+                         Geneva, Verdana, sans-serif;">
+            <u>Navigate the Labyrinth</u>
+        </h2>
+        <button class="startbtn">Start</button>
+        <button id="connect">Connect to micro:bit</button>
+        <div id="message">Press the A button on your micro:bit...</div>
+    </div>
+
+    <ul class="background">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li>
+    </ul>
+
+    <div class="content">
+        <div class="msgbox"></div>
+        <canvas id="mazeCanvas" height="400" width="400"></canvas>
+    </div>
+
+    <script>
+        // --- Canvas & DOM references ---
+        const canvas = document.getElementById('mazeCanvas');
+        const pen = canvas.getContext('2d');
+        const connectButton = document.getElementById('connect');
+        const messageDiv = document.getElementById('message');
+        const startButton = document.querySelector('.startbtn');
+        const messageBox = document.getElementsByClassName('msgbox')[0];
+
+        // --- Maze configuration ---
+        const width = canvas.width;
+        const height = canvas.height;
+        const cellSize = 20; // adjust for difficulty
+
+        const cols = Math.floor(width / cellSize);  // x-axis
+        const rows = Math.floor(height / cellSize); // y-axis
+
+        const playerRadius = cellSize / 2 - 5;
+        const endRadius = cellSize / 2 - 5;
+
+        // --- Game state ---
+        let trail = [];
+        let solutionPath = [];
+        let startTime = null; // timer start
+        let points = 0;       // kept but not displayed
+
+        // Time penalty for revisiting a cell (in ms)
+        const PENALTY_PER_VISIT_MS = 5000; // 5 seconds
+        let penaltyMs = 0;
+
+        // Smooth micro:bit input: cooldown between moves
+        let lastMicrobitMoveTime = 0;
+        const microbitMoveCooldown = 120; // ms per move
+
+        const player1 = {
+            x: 0,
+            y: 0,
+            color: 'red',
+        };
+
+        const end = {
+            x: cols - 1,
+            y: rows - 1,
+            color: 'blue',
+        };
+
+        // 2D array of cells: cells[x][y]
+        const cells = Array.from({ length: cols }, (_, x) =>
+            Array.from({ length: rows }, (_, y) => null)
+        );
+
+        // --- Cell class ---
+        class Cell {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.visited = false;
+                this.walls = {
+                    top: true,
+                    right: true,
+                    bottom: true,
+                    left: true,
+                };
+            }
+
+            show() {
+                const x = this.x * cellSize;
+                const y = this.y * cellSize;
+
+                pen.beginPath();
+
+                if (this.walls.top) {
+                    pen.moveTo(x, y);
+                    pen.lineTo(x + cellSize, y);
+                }
+
+                if (this.walls.right) {
+                    pen.moveTo(x + cellSize, y);
+                    pen.lineTo(x + cellSize, y + cellSize);
+                }
+
+                if (this.walls.bottom) {
+                    pen.moveTo(x + cellSize, y + cellSize);
+                    pen.lineTo(x, y + cellSize);
+                }
+
+                if (this.walls.left) {
+                    pen.moveTo(x, y + cellSize);
+                    pen.lineTo(x, y);
+                }
+
+                pen.strokeStyle = 'green';
+                pen.lineWidth = 5;
+                pen.lineCap = "round";
+                pen.stroke();
+            }
+        }
+
+        // --- Utility ---
+        function randomize(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function clearScreen() {
+            pen.clearRect(0, 0, width, height);
+        }
+
+        function displayHidden() {
+            messageBox.style.visibility = "hidden";
+        }
+
+        function showRestartMessage(text = "Invalid Move. Press restart.") {
+            messageBox.innerHTML = `
+                ${text}<br>
+                <button class='restartbtn' style='margin-top:70px;' onclick='resetState()'>
+                    Restart
+                </button>
+            `;
+            messageBox.style.visibility = "visible";
+            messageBox.style.fontSize = "1.3em";
+            messageBox.style.color = "white";
+            messageBox.style.fontFamily =
+                `'Lucida Sans',
+                 'Lucida Sans Regular',
+                 'Lucida Grande',
+                 'Lucida Sans Unicode',
+                 Geneva, Verdana, sans-serif`;
+        }
+
+        function resetState() {
+            messageBox.style.visibility = "hidden";
+            resetPlayerPos();
+            trail = [];
+            points = 0;
+            penaltyMs = 0;
+            startTime = Date.now(); // restart timer on reset
+            draw();
+        }
+
+        // Expose resetState for inline onclick
+        window.resetState = resetState;
+
+        // --- Maze generation (DFS) ---
+        function setup() {
+            // Initialize cells
+            for (let x = 0; x < cols; x++) {
+                for (let y = 0; y < rows; y++) {
+                    cells[x][y] = new Cell(x, y);
+                }
+            }
+            generateMaze(0, 0);
+            solutionPath = solveMaze();
+        }
+
+        function generateMaze(x, y) {
+            const presentCell = cells[x][y];
+            presentCell.visited = true;
+
+            const directions = randomize(['top', 'right', 'bottom', 'left']);
+
+            for (const direction of directions) {
+                const dx = { top: 0, right: 1, bottom: 0, left: -1 }[direction];
+                const dy = { top: -1, right: 0, bottom: 1, left: 0 }[direction];
+
+                const newX = x + dx;
+                const newY = y + dy;
+
+                if (newX >= 0 && newX < cols && newY >= 0 && newY < rows) {
+                    const neighbour = cells[newX][newY];
+
+                    if (!neighbour.visited) {
+                        // Remove walls between current and neighbour
+                        presentCell.walls[direction] = false;
+                        const opposite = {
+                            top: 'bottom',
+                            right: 'left',
+                            bottom: 'top',
+                            left: 'right',
+                        }[direction];
+                        neighbour.walls[opposite] = false;
+
+                        generateMaze(newX, newY);
+                    }
+                }
+            }
+        }
+
+        // --- Maze solving (DFS) for the correct path ---
+        function solveMaze() {
+            const visited = Array.from({ length: cols }, () =>
+                Array(rows).fill(false)
+            );
+            const path = [];
+
+            function dfs(x, y) {
+                if (x < 0 || x >= cols || y < 0 || y >= rows || visited[x][y]) {
+                    return false;
+                }
+
+                visited[x][y] = true;
+                path.push({ x, y });
+
+                if (x === end.x && y === end.y) {
+                    return true;
+                }
+
+                const cell = cells[x][y];
+
+                if (!cell.walls.top && dfs(x, y - 1)) return true;
+                if (!cell.walls.right && dfs(x + 1, y)) return true;
+                if (!cell.walls.bottom && dfs(x, y + 1)) return true;
+                if (!cell.walls.left && dfs(x - 1, y)) return true;
+
+                path.pop();
+                return false;
+            }
+
+            dfs(0, 0);
+            return path;
+        }
+
+        // --- Player & drawing ---
+        function resetPlayerPos() {
+            player1.x = 0;
+            player1.y = 0;
+            points = 0;
+            trail = [];
+        }
+
+        function drawPlayer(player) {
+            const x = player.x * cellSize + cellSize / 2;
+            const y = player.y * cellSize + cellSize / 2;
+
+            pen.beginPath();
+            pen.arc(x, y, playerRadius, 0, 2 * Math.PI);
+            pen.fillStyle = player.color;
+            pen.fill();
+        }
+
+        function drawEnd() {
+            const x = (end.x + 0.5) * cellSize;
+            const y = (end.y + 0.5) * cellSize;
+
+            pen.beginPath();
+            pen.arc(x, y, endRadius, 0, 2 * Math.PI);
+            pen.fillStyle = end.color;
+            pen.fill();
+        }
+
+        function drawTrail() {
+            if (trail.length === 0) return;
+
+            pen.beginPath();
+            for (let i = 0; i < trail.length; i++) {
+                const trailX = trail[i].x * cellSize + cellSize / 2;
+                const trailY = trail[i].y * cellSize + cellSize / 2;
+
+                if (i === 0) {
+                    pen.moveTo(trailX, trailY);
+                } else {
+                    pen.lineTo(trailX, trailY);
+                }
+            }
+            pen.lineCap = "round";
+            pen.strokeStyle = "white";
+            pen.lineWidth = 4;
+            pen.stroke();
+        }
+
+        function draw() {
+            clearScreen();
+
+            // Draw maze walls
+            for (let x = 0; x < cols; x++) {
+                for (let y = 0; y < rows; y++) {
+                    cells[x][y].show();
+                }
+            }
+
+            // Record trail and draw it
+            trail.push({ x: player1.x, y: player1.y });
+            drawTrail();
+
+            // Draw player and goal
+            drawPlayer(player1);
+            drawEnd();
+
+            // Check if still on solution path
+            const isPartOfSolution = solutionPath.some(
+                cell => cell.x === player1.x && cell.y === player1.y
+            );
+
+            if (!isPartOfSolution) {
+                showRestartMessage("You left the correct path! Press restart.");
+            }
+        }
+
+        // --- Movement logic ---
+        function movePlayer(direction, player) {
+            let validMove = false;
+
+            const currentCell = cells[player.x][player.y];
+
+            switch (direction) {
+                case 'ArrowUp':
+                    if (player.y > 0 && !currentCell.walls.top) {
+                        player.y--;
+                        points++;
+                        validMove = true;
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (player.y < rows - 1 && !currentCell.walls.bottom) {
+                        player.y++;
+                        points++;
+                        validMove = true;
+                    }
+                    break;
+                case 'ArrowLeft':
+                    if (player.x > 0 && !currentCell.walls.left) {
+                        player.x--;
+                        points++;
+                        validMove = true;
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (player.x < cols - 1 && !currentCell.walls.right) {
+                        player.x++;
+                        points++;
+                        validMove = true;
+                    }
+                    break;
+            }
+
+            if (!validMove) {
+                // Ignore illegal moves (into walls)
+                return;
+            }
+
+            // Check revisiting cells: now adds a time penalty instead of restart
+            const isTwice = trail.some(
+                cell => cell.x === player.x && cell.y === player.y
+            );
+            if (isTwice) {
+                penaltyMs += PENALTY_PER_VISIT_MS;
+                messageDiv.textContent = `Time penalty! +${PENALTY_PER_VISIT_MS / 1000}s`;
+            }
+
+            // Win condition: reached the end
+            if (player.x === end.x && player.y === end.y) {
+                document.removeEventListener('keydown', handleKeyPress);
+
+                // ⏱ calculate elapsed time in seconds including penalties
+                const elapsedMs = startTime ? (Date.now() - startTime + penaltyMs) : 0;
+                const elapsedSeconds = (elapsedMs / 1000).toFixed(2);
+
+                messageBox.innerHTML = `
+                    <h1>You Won!</h1>
+                    <h2>Time (with penalties): ${elapsedSeconds} s</h2>
+                    <button id='done' onclick='location.reload()'>Play Again</button>
+                `;
+                messageBox.style.fontSize = "1em";
+                messageBox.style.color = "black";
+                messageBox.style.fontFamily =
+                    `'Lucida Sans',
+                     'Lucida Sans Regular',
+                     'Lucida Grande',
+                     'Lucida Sans Unicode',
+                     Geneva, Verdana, sans-serif`;
+                messageBox.style.visibility = "visible";
+            }
+        }
+
+        function handleKeyPress(event) {
+            movePlayer(event.key, player1);
+            draw();
+        }
+
+        function addKeyboardListener() {
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        // --- micro:bit connection (Web Serial) ---
+        connectButton.addEventListener('click', async () => {
+            try {
+                const port = await navigator.serial.requestPort();
+                await port.open({ baudRate: 115200 });
+
+                const decoder = new TextDecoderStream();
+                port.readable.pipeTo(decoder.writable);
+                const inputStream = decoder.readable;
+                const reader = inputStream.getReader();
+
+                let buffer = "";
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    if (value) {
+                        buffer += value;
+                        let lines = buffer.split("\n");
+                        buffer = lines.pop(); // Keep incomplete line
+
+                        for (let line of lines) {
+                            const trimmed = line.trim();
+                            console.log("Received:", trimmed);
+
+                            const now = Date.now();
+                            // Cooldown: ignore if last move was too recent
+                            if (now - lastMicrobitMoveTime < microbitMoveCooldown) {
+                                continue;
+                            }
+
+                            let direction = null;
+
+                            if (trimmed === "LEFT") {
+                                direction = 'ArrowLeft';
+                            } else if (trimmed === "RIGHT") {
+                                direction = 'ArrowRight';
+                            } else if (trimmed === "UP") {
+                                direction = 'ArrowUp';
+                            } else if (trimmed === "DOWN") {
+                                direction = 'ArrowDown';
+                            }
+
+                            if (direction) {
+                                lastMicrobitMoveTime = now;
+                                messageDiv.textContent = trimmed;
+                                movePlayer(direction, player1);
+                                draw();
+                            }
+                        }
+                    }
+                }
+
+                await reader.releaseLock();
+            } catch (err) {
+                console.error('Connection failed:', err);
+                messageDiv.textContent = "❌ Failed to connect to micro:bit.";
+            }
+        });
+
+        // --- Start button behavior / initial setup ---
+        startButton.addEventListener('click', function () {
+            resetPlayerPos();
+            clearScreen();
+            setup();
+            trail = [];
+            solutionPath = solveMaze();
+            penaltyMs = 0;
+            startTime = Date.now();   // ⏱ start the timer
+            draw();
+            addKeyboardListener();
+            displayHidden();
+            startButton.classList.remove("blink");
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            startButton.classList.add("blink");
+        });
+
+        // Optional: show a maze before starting (no timer yet)
+        setup();
+        draw();
+    </script>
+</body>
+</html>
