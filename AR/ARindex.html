@@ -4,11 +4,7 @@
 <head>
   <meta charset="utf-8">
 
-  <!-- Current A-Frame -->
-
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-
-  <!-- Current AR.js marker tracking -->
 
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
@@ -16,27 +12,22 @@
 
 <body style="margin: 0; overflow: hidden;">
 
-<a-scene
- embedded
- arjs="sourceType: webcam; debugUIEnabled: false;">
+  <a-scene embedded arjs="sourceType: webcam;">
 
 ```
-<!-- YOUR CUSTOM MARKER -->
-<a-marker
+<!-- Your 3D model -->
+<a-entity
+  gltf-model="https://raw.githubusercontent.com/mzcrockettfoundation/files/a4fc3348c1ad2a8416c55818b5b4285ef1fa24a7/Crockett%20Foundation_Color%20Logo%20Mark.gltf"
+  scale="1 1 1"
+  position="0 0 0">
+</a-entity>
+
+<!-- Your custom marker -->
+<a-marker-camera
+  preset="pattern"
   type="pattern"
   url="https://raw.githubusercontent.com/mzcrockettfoundation/StudentPages/refs/heads/main/AR/pattern-Crockett%20Foundation_Color%20Logo%20Mark.patt">
-
-  <!-- YOUR GLTF MODEL -->
-  <a-entity
-    gltf-model="https://raw.githubusercontent.com/mzcrockettfoundation/files/a4fc3348c1ad2a8416c55818b5b4285ef1fa24a7/Crockett%20Foundation_Color%20Logo%20Mark.gltf"
-    position="0 0 0"
-    scale="1 1 1">
-  </a-entity>
-
-</a-marker>
-
-<!-- CAMERA -->
-<a-entity camera></a-entity>
+</a-marker-camera>
 ```
 
   </a-scene>
