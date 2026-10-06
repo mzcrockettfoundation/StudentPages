@@ -8,19 +8,20 @@
 <body>
   <a-scene embedded arjs>
 
-    <a-marker
-      type="pattern" 
-      url="https://raw.githubusercontent.com/mzcrockettfoundation/StudentPages/refs/heads/main/AR/pattern-Crockett%20Foundation_Color%20Logo%20Mark.patt">
-
-          <a-entity
+              <a-entity
       gltf-model="https://raw.githubusercontent.com/mzcrockettfoundation/files/a4fc3348c1ad2a8416c55818b5b4285ef1fa24a7/Crockett%20Foundation_Color%20Logo%20Mark.gltf"
       scale="1 1 1"
       position="0 0 0"
       >
     </a-entity>
-      </a-marker>
 
-     <a-entity camera></a-entity>
+    <a-marker-camera
+      type="pattern" 
+      url="https://raw.githubusercontent.com/mzcrockettfoundation/StudentPages/refs/heads/main/AR/pattern-Crockett%20Foundation_Color%20Logo%20Mark.patt">
+
+
+      </a-marker-camera>
+
   </a-scene>
 </body>
 </html>
